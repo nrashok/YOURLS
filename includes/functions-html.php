@@ -93,6 +93,7 @@ function yourls_html_head( $context = 'index', $title = '' ) {
 	<script src="<?php yourls_site_url(); ?>/js/common.js?v=<?php echo YOURLS_VERSION; ?>" type="text/javascript"></script>
 	<script src="<?php yourls_site_url(); ?>/js/jquery.notifybar.js?v=<?php echo YOURLS_VERSION; ?>" type="text/javascript"></script>
 	<link rel="stylesheet" href="<?php yourls_site_url(); ?>/css/style.css?v=<?php echo YOURLS_VERSION; ?>" type="text/css" media="screen" />
+	<link rel="stylesheet" href="<?php yourls_site_url(); ?>/css/bootstrap/css/bootstrap.min.css" type="text/css" media="screen" />
 	<?php if ( $tabs ) { ?>
 		<link rel="stylesheet" href="<?php yourls_site_url(); ?>/css/infos.css?v=<?php echo YOURLS_VERSION; ?>" type="text/css" media="screen" />
 		<script src="<?php yourls_site_url(); ?>/js/infos.js?v=<?php echo YOURLS_VERSION; ?>" type="text/javascript"></script>
@@ -128,7 +129,7 @@ function yourls_html_head( $context = 'index', $title = '' ) {
 	<?php yourls_do_action( 'html_head', $context ); ?>
 </head>
 <body class="<?php echo $context; ?> <?php echo $bodyclass; ?>">
-<div id="wrap">
+<div class="container">
 	<?php
 }
 
@@ -142,13 +143,13 @@ function yourls_html_footer() {
 	$num_queries = sprintf( yourls_n( '1 query', '%s queries', $ydb->num_queries ), $ydb->num_queries );
 	?>
 	</div><?php // wrap ?>
-	<footer id="footer" role="contentinfo"><p>
+	<footer id="footer" role="contentinfo" class="container-fluid text-centre"><div >
 		<?php
 		$footer  = yourls_s( 'Powered by %s', '<a href="http://yourls.org/" title="YOURLS">YOURLS</a> v ' . YOURLS_VERSION );
 		$footer .= ' &ndash; '.$num_queries;
 		echo yourls_apply_filter( 'html_footer_text', $footer );
 		?>
-	</p></footer>
+	</div></footer>
 	<?php if( defined( 'YOURLS_DEBUG' ) && YOURLS_DEBUG == true ) {
 		echo '<div style="text-align:left"><pre>';
 		echo join( "\n", $ydb->debug_log );
@@ -394,13 +395,14 @@ function yourls_share_box( $longurl, $shorturl, $title = '', $text='', $shortlin
 	$_url   = rawurlencode( $shorturl );
 	?>
 	
-	<div id="shareboxes" <?php echo $hidden; ?>>
+	<div class="row" id="shareboxes" <?php echo $hidden; ?>>
+
 
 		<?php yourls_do_action( 'shareboxes_before', $longurl, $shorturl, $title, $text ); ?>
 
-		<div id="copybox" class="share">
+		<div id="copybox" class="col-sm-3">
 		<?php echo $shortlink_title; ?>
-			<p><input id="copylink" class="text" size="32" value="<?php echo yourls_esc_url( $shorturl ); ?>" /></p>
+			<p><input id="copylink" class="form-control" size="32" value="<?php echo yourls_esc_url( $shorturl ); ?>" /></p>
 			<p><small><?php yourls_e( 'Long link' ); ?>: <a id="origlink" href="<?php echo yourls_esc_url( $longurl ); ?>"><?php echo yourls_esc_url( $longurl ); ?></a></small>
 			<?php if( yourls_do_log_redirect() ) { ?>
 			<br/><small><?php yourls_e( 'Stats' ); ?>: <a id="statlink" href="<?php echo yourls_esc_url( $shorturl ); ?>+"><?php echo yourls_esc_url( $shorturl ); ?>+</a></small>
@@ -411,11 +413,11 @@ function yourls_share_box( $longurl, $shorturl, $title = '', $text='', $shortlin
 
 		<?php yourls_do_action( 'shareboxes_middle', $longurl, $shorturl, $title, $text ); ?>
 
-		<div id="sharebox" class="share">
+		<div id="sharebox" class="col-sm-4">
 			<?php echo $share_title; ?>
 			<div id="tweet">
 				<span id="charcount" class="hide-if-no-js"><?php echo $count; ?></span>
-				<textarea id="tweet_body"><?php echo $share; ?></textarea>
+				<textarea id="tweet_body" class="form-control"><?php echo $share; ?></textarea>
 			</div>
 			<p id="share_links"><?php yourls_e( 'Share with' ); ?> 
 				<a id="share_tw" href="http://twitter.com/home?status=<?php echo $_share; ?>" title="<?php yourls_e( 'Tweet this!' ); ?>" onclick="share('tw');return false">Twitter</a>
@@ -746,7 +748,7 @@ function yourls_html_menu() {
 	} else {
 		$logout_link = yourls_apply_filter( 'logout_link', '' );
 	}
-	$help_link   = yourls_apply_filter( 'help_link',   '<a href="' . yourls_site_url( false ) .'/readme.html">' . yourls__( 'Help' ) . '</a>' );
+	$help_link   = yourls_apply_filter( 'help_link',   '<a class="nav-link" href="' . yourls_site_url( false ) .'/readme.html">' . yourls__( 'Help' ) . '</a>' );
 	
 	$admin_links    = array();
 	$admin_sublinks = array();
@@ -773,15 +775,15 @@ function yourls_html_menu() {
 	$admin_sublinks = yourls_apply_filter( 'admin_sublinks', $admin_sublinks );
 	
 	// Now output menu
-	echo '<nav role="navigation"><ul id="admin_menu">'."\n";
+	echo '<nav class="navbar navbar-expand-sm "><ul class="navbar-nav" id="admin_menu">'."\n";
 	if ( yourls_is_private() && !empty( $logout_link ) )
-		echo '<li id="admin_menu_logout_link">' . $logout_link .'</li>';
+		echo '<li "nav-item active" id="admin_menu_logout_link">' . $logout_link .'</li>';
 
 	foreach( (array)$admin_links as $link => $ar ) {
 		if( isset( $ar['url'] ) ) {
 			$anchor = isset( $ar['anchor'] ) ? $ar['anchor'] : $link;
 			$title  = isset( $ar['title'] ) ? 'title="' . $ar['title'] . '"' : '';
-			printf( '<li id="admin_menu_%s_link" class="admin_menu_toplevel"><a href="%s" %s>%s</a>', $link, $ar['url'], $title, $anchor );
+			printf( '<li class="nav-item"id="admin_menu_%s_link" class="admin_menu_toplevel"><a class="nav-link" href="%s" %s>%s</a>', $link, $ar['url'], $title, $anchor );
 		}
 		// Output submenu if any. TODO: clean up, too many code duplicated here
 		if( isset( $admin_sublinks[$link] ) ) {
@@ -790,7 +792,7 @@ function yourls_html_menu() {
 				if( isset( $ar['url'] ) ) {
 					$anchor = isset( $ar['anchor'] ) ? $ar['anchor'] : $link;
 					$title  = isset( $ar['title'] ) ? 'title="' . $ar['title'] . '"' : '';
-					printf( '<li id="admin_menu_%s_link" class="admin_menu_sublevel admin_menu_sublevel_%s"><a href="%s" %s>%s</a>', $link, $link, $ar['url'], $title, $anchor );
+					printf( '<li class="nav-item" id="admin_menu_%s_link" class="admin_menu_sublevel admin_menu_sublevel_%s"><a class="nav-link" href="%s" %s>%s</a>', $link, $link, $ar['url'], $title, $anchor );
 				}
 			}
 			echo "</ul>\n";
@@ -798,7 +800,7 @@ function yourls_html_menu() {
 	}
 	
 	if ( isset( $help_link ) )
-		echo '<li id="admin_menu_help_link">' . $help_link .'</li>';
+		echo '<li class="nav-item " id="admin_menu_help_link">' . $help_link .'</li>';
 		
 	yourls_do_action( 'admin_menu' );
 	echo "</ul></nav>\n";
