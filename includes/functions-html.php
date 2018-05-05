@@ -7,12 +7,7 @@
 function yourls_html_logo() {
 	yourls_do_action( 'pre_html_logo' );
 	?>
-	<header role="banner">
-	<h1>
-		<a href="<?php echo yourls_admin_url( 'index.php' ) ?>" title="YOURLS"><span>YOURLS</span>: <span>Y</span>our <span>O</span>wn <span>URL</span> <span>S</span>hortener<br/>
-		<img src="<?php yourls_site_url(); ?>/images/yourls-logo.png" alt="YOURLS" title="YOURLS" border="0" style="border: 0px;" /></a>
-	</h1>
-	</header>
+	
 	<?php
 	yourls_do_action( 'html_logo' );
 }
@@ -172,11 +167,11 @@ function yourls_html_addnew( $url = '', $keyword = '' ) {
 	<main role="main">
 	<div id="new_url">
 		<div>
-			<form id="new_url_form" action="" method="get">
-				<div><strong><?php yourls_e( 'Enter the URL' ); ?></strong>:<input type="text" id="add-url" name="url" value="<?php echo $url; ?>" class="text" size="80" placeholder="http://" />
-				<?php yourls_e( 'Optional '); ?> : <strong><?php yourls_e('Custom short URL'); ?></strong>:<input type="text" id="add-keyword" name="keyword" value="<?php echo $keyword; ?>" class="text" size="8" />
+			<form id="new_url_form" class="form-inline" action="" method="get">
+				<div><strong><?php yourls_e( 'Enter the URL' ); ?></strong>:<input class="form-control" type="text" id="add-url" name="url" value="<?php echo $url; ?>" class="text" size="50" placeholder="http://" />
+				<?php yourls_e( 'Optional '); ?> : <strong><?php yourls_e('Custom short URL'); ?></strong>:<input class="form-control"  type="text" id="add-keyword" name="keyword" value="<?php echo $keyword; ?>" class="text" size="8" />
 				<?php yourls_nonce_field( 'add_url', 'nonce-add' ); ?>
-				<input type="button" id="add-button" name="add-button" value="<?php yourls_e( 'Shorten The URL' ); ?>" class="button" onclick="add_link();" /></div>
+				<input type="button" id="add-button" name="add-button" value="<?php yourls_e( 'Shorten The URL' ); ?>" class="btn btn-primary" onclick="add_link();" /></div>
 			</form>
 			<div id="feedback" style="display:none"></div>
 		</div>
@@ -215,12 +210,12 @@ function yourls_html_tfooter( $params = array() ) {
 		<tr>
 			<th colspan="6">
 			<div id="filter_form">
-				<form action="" method="get">
+				<form class="form-inline" action="" method="get">
 					<div id="filter_options">
 						<?php
 						
 						// First search control: text to search
-						$_input = '<input type="text" name="search" class="text" size="12" value="' . yourls_esc_attr( $search_text ) . '" />';
+						$_input = '<input class="form-control" type="text" name="search" size="12" value="' . yourls_esc_attr( $search_text ) . '" />';
 						$_options = array(
                             'all'     => yourls__( 'All fields' ),
 							'keyword' => yourls__( 'Short URL' ),
@@ -254,7 +249,7 @@ function yourls_html_tfooter( $params = array() ) {
 						
 						// Third search control: Show XX rows
 						/* //translators: "Show <text field> rows" */
-						yourls_se( 'Show %s rows',  '<input type="text" name="perpage" class="text" size="2" value="' . $perpage . '" />' );
+						yourls_se( 'Show %s rows',  '<input  ftype="text" name="perpage" class="form-control" size="2" value="' . $perpage . '" />' );
 						echo "<br/>\n";
 
 						// Fourth search control: Show links with more than XX clicks
@@ -263,7 +258,7 @@ function yourls_html_tfooter( $params = array() ) {
 							'less' => yourls__( 'less' ),
 						);
 						$_select = yourls_html_select( 'click_filter', $_options, $click_filter );
-						$_input  = '<input type="text" name="click_limit" class="text" size="4" value="' . $click_limit . '" /> ';
+						$_input  = '<input type="text" name="click_limit" class="form-control"  size="4" value="' . $click_limit . '" /> ';
 						/* //translators: "Show links with <more/less> than <text field> clicks" */
 						yourls_se( 'Show links with %1$s than %2$s clicks', $_select, $_input );
 						echo "<br/>\n";
@@ -275,17 +270,17 @@ function yourls_html_tfooter( $params = array() ) {
 							'between' => yourls__('between'),
 						);
 						$_select = yourls_html_select( 'date_filter', $_options, $date_filter );
-						$_input  = '<input type="text" name="date_first" id="date_first" class="text" size="12" value="' . $date_first . '" />';
+						$_input  = '<input type="text" name="date_first" id="date_first" class="form-control"  size="12" value="' . $date_first . '" />';
 						$_and    = '<span id="date_and"' . ( $date_filter === 'between' ? ' style="display:inline"' : '' ) . '> &amp; </span>';
-						$_input2 = '<input type="text" name="date_second" id="date_second" class="text" size="12" value="' . $date_second . '"' . ( $date_filter === 'between' ? ' style="display:inline"' : '' ) . '/>';
+						$_input2 = '<input type="text" name="date_second" id="date_second" class="form-control" size="12" value="' . $date_second . '"' . ( $date_filter === 'between' ? ' style="display:inline"' : '' ) . '/>';
 						/* //translators: "Show links created <before/after/between> <date input> <"and" if applicable> <date input if applicable>" */
 						yourls_se( 'Show links created %1$s %2$s %3$s %4$s', $_select, $_input, $_and, $_input2 );
 						?>
 
 						<div id="filter_buttons">
-							<input type="submit" id="submit-sort" value="<?php yourls_e('Search'); ?>" class="button primary" />
+							<input type="submit" id="submit-sort" value="<?php yourls_e('Search'); ?>" class="btn btn-primary" />
 							&nbsp;
-							<input type="button" id="submit-clear-filter" value="<?php yourls_e('Clear'); ?>" class="button" onclick="window.parent.location.href = 'index.php'" />
+							<input type="button" id="submit-clear-filter" value="<?php yourls_e('Clear'); ?>" class="btn btn-warning" onclick="window.parent.location.href = 'index.php'" />
 						</div>
 				
 					</div>
@@ -352,7 +347,7 @@ function yourls_html_tfooter( $params = array() ) {
  * @return string HTML content of the select element
  */
 function yourls_html_select( $name, $options, $selected = '', $display = false ) {
-	$html = "<select name='$name' id='$name' size='1'>\n";
+	$html = "<select class='form-control' name='$name' id='$name' size='1'>\n";
 	foreach( $options as $value => $text ) {
 		$html .= "<option value='$value' ";
 		$html .= $selected == $value ? ' selected="selected"' : '';
@@ -643,7 +638,7 @@ class yourls_table_add_row_callback {
  *
  */
 function yourls_table_head() {
-	$start = '<table id="main_table" class="tblSorter" cellpadding="0" cellspacing="1"><thead><tr>'."\n";
+	$start = '<table id="main_table" class="table table-hover" ><thead><tr>'."\n";
 	echo yourls_apply_filter( 'table_head_start', $start );
 	
 	$cells = yourls_apply_filter( 'table_head_cells', array(
@@ -742,9 +737,11 @@ function yourls_login_screen( $error_msg = '' ) {
  */
 function yourls_html_menu() {
 
+	echo '<header class="container-fluid">';
+
 	// Build menu links
 	if( defined( 'YOURLS_USER' ) ) {
-		$logout_link = yourls_apply_filter( 'logout_link', sprintf( yourls__('Hello <strong>%s</strong>'), YOURLS_USER ) . ' (<a href="?action=logout" title="' . yourls_esc_attr__( 'Logout' ) . '">' . yourls__( 'Logout' ) . '</a>)' );
+		$logout_link = yourls_apply_filter( 'logout_link', sprintf( yourls__('Hello <strong>%s</strong>'), YOURLS_USER ) . ' (<a  $logout_link href="?action=logout" title="' . yourls_esc_attr__( 'Logout' ) . '">' . yourls__( 'Logout' ) . '</a>)' );
 	} else {
 		$logout_link = yourls_apply_filter( 'logout_link', '' );
 	}
@@ -811,6 +808,7 @@ function yourls_html_menu() {
 	$message = "<div>OMG, dude, I mean!</div>" );
 	yourls_add_action( 'admin_notices', create_function( '', "echo '$message';" ) );
 	*/
+	echo '</header>';
 }
 
 /**

@@ -36,7 +36,7 @@ yourls_html_menu();
 		
 		<p><?php yourls_e( 'Click and drag links to your toolbar (or right-click and bookmark it)' ); ?></p>
         
-        <table class="tblSorter" cellpadding="0" cellspacing="1">
+        <table class="table table-hover" cellpadding="0" cellspacing="1">
 			<thead>
 			<tr>
 				<td>&nbsp;</td>

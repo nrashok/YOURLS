@@ -75,7 +75,7 @@ yourls_html_menu();
 	
 	<p id="plugin_summary"><?php /* //translators: "you have '3 plugins' installed and '1' activated" */ yourls_se( 'You currently have <strong>%1$s</strong> installed, and <strong>%2$s</strong> activated', $plugins_count, $count_active ); ?></p>
 
-	<table id="main_table" class="tblSorter" cellpadding="0" cellspacing="1">
+	<table id="main_table" class="table table-hover" cellpadding="0" cellspacing="1">
 	<thead>
 		<tr>
 			<th><?php yourls_e( 'Plugin Name' ); ?></th>
